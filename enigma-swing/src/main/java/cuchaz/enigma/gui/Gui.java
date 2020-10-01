@@ -574,13 +574,13 @@ public class Gui implements LanguageChangeListener {
 	public void startRename(EditorPanel editor, String text) {
 		if (editor != getActiveEditor()) return;
 
-		infoPanel.startRenaming(text);
+		infoPanel.startRenaming(text, editor);
 	}
 
 	public void startRename(EditorPanel editor) {
 		if (editor != getActiveEditor()) return;
 
-		infoPanel.startRenaming();
+		infoPanel.startRenaming(editor);
 	}
 
 	public void showInheritance(EditorPanel editor) {

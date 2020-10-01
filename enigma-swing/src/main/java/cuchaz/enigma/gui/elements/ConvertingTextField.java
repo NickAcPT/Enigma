@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.text.Document;
 
 import cuchaz.enigma.gui.events.ConvertingTextFieldListener;
+import cuchaz.enigma.gui.panels.EditorPanel;
 import cuchaz.enigma.gui.util.GuiUtil;
 import cuchaz.enigma.utils.validation.ParameterizedMessage;
 import cuchaz.enigma.utils.validation.Validatable;
@@ -26,6 +27,7 @@ public class ConvertingTextField implements Validatable {
 	private boolean isEditing = false;
 
 	private final Set<ConvertingTextFieldListener> listeners = new HashSet<>();
+	private EditorPanel editor;
 
 	public ConvertingTextField(String text) {
 		this.ui = new JPanel();
@@ -37,7 +39,7 @@ public class ConvertingTextField implements Validatable {
 		this.label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				startEditing();
+				startEditing(editor);
 			}
 		});
 
@@ -64,7 +66,7 @@ public class ConvertingTextField implements Validatable {
 		this.ui.add(this.label);
 	}
 
-	public void startEditing() {
+	public void startEditing(EditorPanel editor) {
 		if (isEditing) return;
 		this.ui.removeAll();
 		this.ui.add(this.textField);
@@ -74,6 +76,7 @@ public class ConvertingTextField implements Validatable {
 		this.textField.requestFocusInWindow();
 		this.textField.selectAll();
 		this.listeners.forEach(l -> l.onStartEditing(this));
+		this.editor = editor;
 	}
 
 	public void stopEditing(boolean abort) {
@@ -93,6 +96,10 @@ public class ConvertingTextField implements Validatable {
 		this.ui.validate();
 		this.ui.repaint();
 		this.listeners.forEach(l -> l.onStopEditing(this, abort));
+
+		if (editor != null && editor.getEditor() != null) {
+			editor.getEditor().requestFocus();
+		}
 	}
 
 	public void setText(String text) {

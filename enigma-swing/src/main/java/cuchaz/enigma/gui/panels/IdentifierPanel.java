@@ -55,18 +55,18 @@ public class IdentifierPanel {
 		refreshReference();
 	}
 
-	public boolean startRenaming() {
+	public boolean startRenaming(EditorPanel editor) {
 		if (this.nameField == null) return false;
 
-		this.nameField.startEditing();
+		this.nameField.startEditing(editor);
 
 		return true;
 	}
 
-	public boolean startRenaming(String text) {
+	public boolean startRenaming(String text, EditorPanel editor) {
 		if (this.nameField == null) return false;
 
-		this.nameField.startEditing();
+		this.nameField.startEditing(editor);
 		this.nameField.setEditText(text);
 
 		return true;
